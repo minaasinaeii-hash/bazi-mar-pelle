@@ -2,92 +2,78 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>مار و پله شمارش - سینایی</title>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Vazirmatn', sans-serif; }
-  body { min-height: 100vh; background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #a1c4fd 100%); display: flex; align-items: center; justify-content: center; padding: 15px; overflow-x: hidden; }
-  .screen { display: none; width: 100%; max-width: 900px; }
-  .screen.active { display: block; animation: fadeIn .5s ease; }
+  body { min-height: 100vh; background: #a8e6cf; display: flex; align-items: center; justify-content: center; padding: 10px; overflow-x: hidden; }
+  .screen { display: none; width: 100%; max-width: 600px; }
+  .screen.active { display: block; animation: fadeIn .4s ease; }
   @keyframes fadeIn { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
-  .start-card { background: rgba(255,255,255,0.95); border-radius: 30px; padding: 40px 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); text-align: center; border: 5px dashed #ffb347; position: relative; overflow: hidden; }
-  .start-card::before { content: "🐍"; position: absolute; font-size: 80px; top: -15px; left: -15px; opacity: .15; transform: rotate(-20deg); }
-  .start-card::after { content: "🪜"; position: absolute; font-size: 80px; bottom: -15px; right: -15px; opacity: .15; transform: rotate(20deg); }
-  h1.title { font-size: 2rem; color: #ff6b35; margin-bottom: 8px; text-shadow: 2px 2px 0 #fff, 4px 4px 0 rgba(255,107,53,0.3); }
-  .subtitle { color: #666; margin-bottom: 15px; font-size: 1rem; font-weight: 700; }
-  .designer { display: inline-block; background: linear-gradient(45deg, #ffb347, #ffcc33); color: #fff; padding: 6px 20px; border-radius: 50px; font-weight: 900; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(255,179,71,0.5); }
+
+  .start-card { background: #fff; border-radius: 20px; padding: 30px 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); text-align: center; border: 4px solid #ff9f1c; }
+  h1.title { font-size: 1.8rem; color: #ff6b35; margin-bottom: 5px; }
+  .subtitle { color: #555; margin-bottom: 15px; font-size: 1rem; font-weight: 700; }
+  .designer { display: inline-block; background: #ff9f1c; color: #fff; padding: 5px 15px; border-radius: 20px; font-weight: 900; margin-bottom: 20px; }
   .input-group { margin: 15px 0; text-align: right; }
-  .input-group label { display: block; margin-bottom: 8px; color: #333; font-weight: 700; font-size: 1rem; }
-  .input-group input { width: 100%; padding: 14px 18px; border-radius: 15px; border: 3px solid #ffd6a5; font-size: 1rem; font-family: 'Vazirmatn', sans-serif; transition: .3s; }
-  .input-group input:focus { outline: none; border-color: #ff6b35; box-shadow: 0 0 0 4px rgba(255,107,53,0.2); }
-  .welcome-msg { background: #e8f5e9; color: #2e7d32; padding: 12px; border-radius: 12px; margin: 15px 0; font-weight: 700; border-right: 5px solid #4caf50; }
-  .btn { border: none; cursor: pointer; font-family: 'Vazirmatn', sans-serif; font-weight: 900; padding: 14px 32px; border-radius: 50px; font-size: 1.1rem; transition: .25s; color: #fff; box-shadow: 0 6px 0 rgba(0,0,0,0.2), 0 8px 20px rgba(0,0,0,0.15); }
-  .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,0.2); }
-  .btn-primary { background: linear-gradient(45deg, #ff6b35, #ff9558); }
-  .btn-teacher { background: linear-gradient(45deg, #4a90e2, #6ba8e8); margin-top: 15px; font-size: .9rem; padding: 10px 24px; }
-  .btn-help { background: linear-gradient(45deg, #ffb347, #ffcc33); font-size: .9rem; padding: 10px 20px; }
-  .btn-roll { background: linear-gradient(45deg, #00b894, #00d2a0); font-size: 1.2rem; padding: 15px 40px; margin: 10px; }
-  .btn-roll:disabled { opacity: .5; cursor: not-allowed; }
-  .game-header { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.95); padding: 12px 20px; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); flex-wrap: wrap; gap: 10px; }
-  .coins { display: flex; align-items: center; gap: 8px; font-weight: 900; color: #d4a017; font-size: 1.3rem; }
-  .coin-icon { width: 32px; height: 32px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #ffeb3b, #f9a825); border: 2px solid #f57f17; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #b26a00; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
-  .player-info { font-weight: 700; color: #333; font-size: .95rem; }
-  .board-wrap { background: rgba(255,255,255,0.95); border-radius: 25px; padding: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.2); }
-  .board { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 15px; }
-  .cell { position: relative; aspect-ratio: 1; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: .85rem; background: linear-gradient(135deg, #a8edea, #fed6e3); color: #333; border: 2px solid #fff; box-shadow: 0 3px 8px rgba(0,0,0,0.1); transition: .3s; }
-  .cell.num { position: absolute; top: 3px; right: 5px; font-size: .7rem; opacity: .7; color: #555; }
-  .cell.snake { background: linear-gradient(135deg, #ff9a9e, #fecfef); }
-  .cell.ladder { background: linear-gradient(135deg, #a1ffce, #faffd1); }
-  .cell.question { background: linear-gradient(135deg, #fbc2eb, #a6c1ee); }
-  .cell.end { background: linear-gradient(135deg, #ffd700, #ffed4e); }
-  .cell.highlight { box-shadow: 0 0 0 4px #ff6b35, 0 0 20px #ff6b35; transform: scale(1.05); }
-  .cell .emoji { font-size: 1.3rem; }
-  .piece { position: absolute; width: 60%; height: 60%; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #ff6b35, #c0392b); border: 3px solid #fff; display: flex; align-items: center; justify-content: center; color: #fff; font-size: .8rem; box-shadow: 0 3px 8px rgba(0,0,0,0.4); animation: bounce 1s infinite; }
-  @keyframes bounce { 0%,100%{ transform: translateY(0);} 50%{ transform: translateY(-4px);} }
-  .dice-area { display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 10px; }
-  .dice { width: 70px; height: 70px; background: #fff; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 900; color: #333; box-shadow: 0 6px 0 #ccc, 0 10px 20px rgba(0,0,0,0.2); transition: .2s; }
+  .input-group label { display: block; margin-bottom: 8px; color: #333; font-weight: 700; font-size: 1.1rem; }
+  .input-group input { width: 100%; padding: 12px; border-radius: 12px; border: 2px solid #ffd6a5; font-size: 1.1rem; font-family: 'Vazirmatn'; }
+  .welcome-msg { background: #e8f5e9; color: #2e7d32; padding: 10px; border-radius: 10px; margin: 15px 0; font-weight: 700; }
+  
+  .btn { border: none; cursor: pointer; font-family: 'Vazirmatn'; font-weight: 900; padding: 12px 25px; border-radius: 12px; font-size: 1.1rem; transition: .2s; color: #fff; box-shadow: 0 4px 0 rgba(0,0,0,0.2); }
+  .btn:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,0.2); }
+  .btn-primary { background: #ff6b35; width: 100%; font-size: 1.3rem; margin-bottom: 10px; }
+  .btn-teacher { background: #4a90e2; font-size: .9rem; }
+  .btn-help { background: #4a90e2; padding: 8px 12px; font-size: .9rem; border-radius: 8px; }
+  
+  .game-header { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 8px 12px; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 2px solid #ddd; }
+  .coins { display: flex; align-items: center; gap: 5px; font-weight: 900; color: #d4a017; font-size: 1.4rem; background: #fff8e1; padding: 2px 10px; border-radius: 20px; border: 2px solid #ffd54f; }
+  .player-info { font-weight: 900; color: #333; font-size: 1.1rem; display: flex; align-items: center; gap: 5px; }
+
+  .board-container { background: #d4a373; padding: 10px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); position: relative; }
+  .board { display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px; border: 4px solid #5c3a21; border-radius: 10px; overflow: hidden; background: #5c3a21; }
+  .cell { position: relative; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.2rem; color: #333; transition: .2s; }
+  .cell.even { background: #fdf5e6; }
+  .cell.odd { background: #e8f5e9; }
+  .cell .num { position: absolute; top: 4px; right: 6px; font-size: 1rem; font-weight: 900; color: #555; }
+  
+  .cell .snake-icon, .cell .ladder-icon { position: absolute; font-size: 2.5rem; z-index: 2; }
+  .cell .snake-icon { bottom: 0px; left: 50%; transform: translateX(-50%); }
+  .cell .ladder-icon { bottom: 0px; left: 50%; transform: translateX(-50%); }
+
+  .cell.highlight { box-shadow: inset 0 0 0 4px #ffeb3b; z-index: 10; }
+  .piece { position: absolute; width: 65%; height: 65%; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #ff9800, #e65100); border: 3px solid #fff; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.5rem; box-shadow: 0 4px 8px rgba(0,0,0,0.5); z-index: 5; animation: bounce 1s infinite; }
+  @keyframes bounce { 0%,100%{ transform: translateY(0);} 50%{ transform: translateY(-5px);} }
+
+  .dice-area { display: flex; align-items: center; justify-content: center; gap: 15px; margin-top: 15px; background: #fff; padding: 10px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+  .btn-roll { background: #00b894; font-size: 1.3rem; padding: 12px 25px; display: flex; align-items: center; gap: 10px; }
+  .dice { width: 60px; height: 60px; background: #fff; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 900; color: #333; border: 3px solid #333; box-shadow: 0 4px 0 #ccc; }
   .dice.rolling { animation: roll .1s infinite; }
-  @keyframes roll { 0%{ transform: rotate(0) scale(1); } 25%{ transform: rotate(90deg) scale(1.1); } 50%{ transform: rotate(180deg) scale(1); } 75%{ transform: rotate(270deg) scale(1.1); } 100%{ transform: rotate(360deg) scale(1); } }
-  .msg-box { text-align: center; padding: 12px; margin-top: 12px; background: #fff8e1; border-radius: 12px; font-weight: 700; color: #663c00; border-right: 5px solid #ffb347; min-height: 50px; display: flex; align-items: center; justify-content: center; font-size: .95rem; }
-  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 100; padding: 15px; backdrop-filter: blur(4px); }
+  @keyframes roll { 0%{ transform: rotate(0) scale(1); } 50%{ transform: rotate(180deg) scale(1.2); } 100%{ transform: rotate(360deg) scale(1); } }
+  
+  .msg-box { text-align: center; padding: 10px; margin-top: 10px; background: #fff; border-radius: 10px; font-weight: 900; color: #333; font-size: 1.1rem; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border: 2px solid #ffd54f; }
+
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 100; padding: 15px; backdrop-filter: blur(5px); }
   .modal-overlay.active { display: flex; animation: fadeIn .3s; }
-  .question-card { background: #fff; border-radius: 25px; padding: 30px 25px; max-width: 500px; width: 100%; text-align: center; box-shadow: 0 25px 60px rgba(0,0,0,0.4); animation: popIn .4s cubic-bezier(.68,-0.55,.27,1.55); }
-  @keyframes popIn { 0%{ transform: scale(.5); opacity:0;} 100%{ transform: scale(1); opacity:1;} }
-  .q-title { font-size: 1.15rem; color: #333; margin-bottom: 20px; font-weight: 900; line-height: 1.9; }
-  .q-options { display: grid; gap: 12px; }
-  .q-option { padding: 16px; border-radius: 15px; border: 3px solid #ddd; background: #f9f9f9; cursor: pointer; font-weight: 700; font-size: 1.2rem; transition: .2s; font-family: 'Vazirmatn', sans-serif; }
-  .q-option:hover { border-color: #ff6b35; background: #fff3e0; transform: translateX(-5px); }
-  .q-option.correct { background: #4caf50; color: #fff; border-color: #2e7d32; animation: pulse .5s; }
+  .question-card { background: #fff; border-radius: 20px; padding: 25px 20px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 5px solid #4a90e2; }
+  .q-title { font-size: 1.3rem; color: #333; margin-bottom: 20px; font-weight: 900; line-height: 1.6; }
+  .q-options { display: grid; gap: 10px; }
+  .q-option { padding: 15px; border-radius: 12px; border: 2px solid #ddd; background: #f9f9f9; cursor: pointer; font-weight: 900; font-size: 1.3rem; transition: .2s; font-family: 'Vazirmatn'; }
+  .q-option:active { transform: scale(0.98); }
+  .q-option.correct { background: #4caf50; color: #fff; border-color: #2e7d32; }
   .q-option.wrong { background: #f44336; color: #fff; border-color: #c62828; animation: shake .5s; }
-  @keyframes pulse { 0%{ transform:scale(1);} 50%{ transform:scale(1.1);} 100%{ transform:scale(1);} }
   @keyframes shake { 0%,100%{ transform:translateX(0);} 25%{ transform:translateX(-10px);} 75%{ transform:translateX(10px);} }
+
   .coin-burst { position: fixed; pointer-events: none; font-size: 2rem; animation: coinFly 1s ease-out forwards; z-index: 200; }
   @keyframes coinFly { 0%{ transform: translate(0,0) scale(1); opacity: 1; } 100%{ transform: translate(var(--x), -150px) scale(0); opacity: 0; } }
-  .report-card { background: rgba(255,255,255,0.97); border-radius: 25px; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
-  .report-card h2 { color: #4a90e2; text-align: center; margin-bottom: 20px; }
-  table { width: 100%; border-collapse: collapse; }
-  th, td { padding: 12px; text-align: center; border-bottom: 2px solid #eee; }
+
+  .report-card, .help-card { background: #fff; border-radius: 20px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto; width: 100%; max-width: 500px; margin: auto; }
+  h2 { text-align: center; color: #4a90e2; margin-bottom: 15px; }
+  table { width: 100%; border-collapse: collapse; font-size: 1.1rem; }
+  th, td { padding: 10px; text-align: center; border-bottom: 2px solid #eee; }
   th { background: #4a90e2; color: #fff; }
-  tr:hover td { background: #f0f7ff; }
-  .empty-report { text-align: center; padding: 30px; color: #999; }
-  .help-content { text-align: right; line-height: 2.2; font-size: 1rem; background: #fff8e1; padding: 15px; border-radius: 12px; border-right: 5px solid #ffb347; margin-bottom: 10px; }
-  .help-section { background: #e3f2fd; padding: 12px; border-radius: 12px; margin: 10px 0; border-right: 5px solid #4a90e2; }
-  .theme-1 { background: linear-gradient(135deg, #ffecd2, #fcb69f); }
-  .theme-2 { background: linear-gradient(135deg, #a1c4fd, #c2e9fb); }
-  .theme-3 { background: linear-gradient(135deg, #d4fc79, #96e6a1); }
-  .theme-4 { background: linear-gradient(135deg, #fbc2eb, #a6c1ee); }
-  .theme-5 { background: linear-gradient(135deg, #fddb92, #d1fdff); }
-  @media (max-width: 600px) {
-    h1.title { font-size: 1.4rem; }
-    .board { gap: 3px; }
-    .cell { font-size: .65rem; border-radius: 8px; }
-    .cell .emoji { font-size: 1rem; }
-    .dice { width: 55px; height: 55px; font-size: 2rem; }
-    .game-header { padding: 10px; }
-    .coins { font-size: 1rem; }
-    .question-card { padding: 20px 15px; }
-    .q-option { font-size: 1.1rem; padding: 14px; }
-  }
+  .help-content { line-height: 2; font-size: 1.1rem; background: #fff8e1; padding: 15px; border-radius: 10px; margin-bottom: 10px; }
 </style>
 </head>
 <body>
@@ -95,69 +81,271 @@
 <div class="screen active" id="startScreen">
   <div class="start-card">
     <h1 class="title">🐍 مار و پله شمارش 🪜</h1>
-    <div class="subtitle">📚 شمارش اعداد ۱ تا ۹۹ - پایه دوم ابتدایی</div>
+    <div class="subtitle">📚 شمارش اعداد ۱ تا ۹۹ - پایه دوم</div>
     <div class="designer">✨ طراح: سینایی ✨</div>
-    <div class="welcome-msg">👋 سلام دوست خوبم! آماده‌ای با بازی، شمارش رو یاد بگیری؟</div>
+    <div class="welcome-msg">👋 سلام دوست خوبم! آماده‌ای؟</div>
     <div class="input-group">
-      <label>نام و نام خانوادگی خودت رو وارد کن:</label>
-      <input type="text" id="studentName" placeholder="مثلاً: علی محمدی" maxlength="30">
+      <label>نام و نام خانوادگی:</label>
+      <input type="text" id="studentName" placeholder="مثلاً: سارا احمدی" maxlength="30">
     </div>
     <button class="btn btn-primary" onclick="startGame()">🎮 شروع بازی</button>
-    <br>
     <button class="btn btn-teacher" onclick="showReport()">📊 گزارش معلم</button>
   </div>
 </div>
 
 <div class="screen" id="gameScreen">
   <div class="game-header">
-    <div class="coins"><div class="coin-icon">🪙</div><span id="coinCount">0</span></div>
-    <div class="player-info">👤 <span id="playerName"></span></div>
-    <button class="btn btn-help" onclick="showHelp()">❓ راهنما</button>
+    <div class="coins"><span>🪙</span><span id="coinCount">0</span></div>
+    <div class="player-info">👦 <span id="playerName"></span></div>
+    <button class="btn btn-help" onclick="document.getElementById('helpModal').classList.add('active')">❓ راهنما</button>
   </div>
-  <div class="board-wrap">
+  
+  <div class="board-container">
     <div class="board" id="board"></div>
-    <div class="dice-area">
-      <button class="btn btn-roll" id="rollBtn" onclick="rollDice()">🎲 پرتاب تاس</button>
-      <div class="dice" id="dice">🎲</div>
-    </div>
-    <div class="msg-box" id="msgBox">برای شروع، تاس رو پرتاب کن! 🎲</div>
   </div>
+
+  <div class="dice-area">
+    <button class="btn btn-roll" id="rollBtn" onclick="rollDice()">🎲 تاس بینداز!</button>
+    <div class="dice" id="dice">1</div>
+  </div>
+  <div class="msg-box" id="msgBox">برای شروع، تاس رو پرتاب کن! 🎲</div>
 </div>
 
 <div class="modal-overlay" id="questionModal">
-  <div class="question-card" id="questionCard">
-    <div style="font-size:2.5rem; margin-bottom:10px;" id="qEmoji">🔢</div>
+  <div class="question-card">
     <div class="q-title" id="qTitle"></div>
     <div class="q-options" id="qOptions"></div>
   </div>
 </div>
 
 <div class="modal-overlay" id="helpModal">
-  <div class="question-card" style="max-width:560px;">
-    <h3 style="margin-bottom:15px; color:#4a90e2;">📖 راهنمای بازی و شمارش</h3>
+  <div class="help-card">
+    <h2>📖 راهنما</h2>
     <div class="help-content">
-      🎲 با پرتاب تاس، مهره‌ات حرکت می‌کنه<br>🐍 اگه روی مار بیفتی، برمی‌گردی عقب<br>🪜 اگه روی پله بیفتی، می‌ری جلو<br>❓ توی خانه‌های سوال، باید جواب درست بدی<br>🪙 هر جواب درست = ۱۰ سکه<br>🏁 برای رسیدن به پایان، باید عدد دقیق بیاری
+      🎲 با پرتاب تاس، مهره‌ات حرکت می‌کنه<br>
+      ❓ روی هر خانه‌ای که بایستی، یک سوال ازت پرسیده می‌شه<br>
+      🪙 جواب درست = ۱۰ سکه<br>
+      🐍 اگه روی مار بیفتی، برمی‌گردی عقب<br>
+      🪜 اگه روی پله بیفتی، می‌ری جلو<br>
+      🏁 برای بردن باید دقیقاً عدد لازم برای رسیدن به خانه آخر بیاد!
     </div>
-    <div class="help-section"><b>🔟 شمارش ده‌تاده‌تا (رو به جلو):</b><br>ده، بیست، سی، چهل، پنجاه، شصت، هفتاد، هشتاد، نود</div>
-    <div class="help-section"><b>🔽 شمارش ده‌تاده‌تا (رو به عقب):</b><br>نود، هشتاد، هفتاد، شصت، پنجاه، چهل، سی، بیست، ده</div>
-    <div class="help-section"><b>⬇️ شمارش یکی‌یکی رو به عقب:</b><br>سی، بیست و نه، بیست و هشت، بیست و هفت، ...</div>
-    <button class="btn btn-primary" style="margin-top:15px;" onclick="closeHelp()">فهمیدم ✅</button>
+    <button class="btn btn-primary" onclick="document.getElementById('helpModal').classList.remove('active')">فهمیدم ✅</button>
   </div>
 </div>
 
 <div class="screen" id="reportScreen">
   <div class="report-card">
     <h2>📊 گزارش معلم</h2>
-    <table><thead><tr><th>ردیف</th><th>نام دانش‌آموز</th><th>امتیاز (سکه)</th><th>وضعیت</th></tr></thead><tbody id="reportBody"></tbody></table>
-    <div style="text-align:center; margin-top:20px;">
-      <button class="btn btn-primary" onclick="backToStart()">🔙 بازگشت</button>
-      <button class="btn btn-teacher" onclick="clearReport()" style="background:linear-gradient(45deg,#e74c3c,#ff7675);">🗑️ پاک کردن</button>
+    <table><thead><tr><th>ردیف</th><th>نام</th><th>سکه</th><th>تاریخ</th></tr></thead><tbody id="reportBody"></tbody></table>
+    <div style="text-align:center; margin-top:20px; display:flex; gap:10px; justify-content:center;">
+      <button class="btn btn-primary" style="width:auto;" onclick="backToStart()">🔙 بازگشت</button>
+      <button class="btn btn-teacher" onclick="clearReport()" style="background:#e74c3c;">🗑️ پاک کردن</button>
     </div>
   </div>
 </div>
 
-<!-- این خط فایل دوم را به صفحه وصل می‌کند -->
-<script src="script.js"></script>
+<script>
+const BOARD_SIZE = 30;
+const SNAKES = { 17: 7, 25: 14, 29: 20 };
+const LADDERS = { 3: 11, 6: 16, 9: 19 };
+const QUESTION_CELLS = [1, 2, 4, 5, 7, 8, 10, 11, 12, 13, 15, 16, 18, 19, 21, 22, 23, 24, 26, 27, 28, 30];
 
-</body>
-     </html>
+const QUESTIONS = [
+  { title: "بعد از ۲۷ چه عددی می‌آید؟", options: ["۲۶", "۲۸", "۳۰"], correct: 1 },
+  { title: "با شمارش یکی‌یکی، بعد از ۵۸ چه عددی می‌آید؟", options: ["۵۷", "۵۹", "۶۰"], correct: 1 },
+  { title: "کدام عدد بین ۴۳ و ۴۵ قرار دارد؟", options: ["۴۲", "۴۴", "۴۶"], correct: 1 },
+  { title: "بعد از ۳۹ چه عددی می‌آید؟", options: ["۳۸", "۴۰", "۴۱"], correct: 1 },
+  { title: "با شمارش رو به عقب، قبل از ۳۰ چه عددی می‌آید؟", options: ["۲۹", "۳۱", "۲۰"], correct: 0 },
+  { title: "قبل از ۵۰ چه عددی است؟", options: ["۵۱", "۴۹", "۶۰"], correct: 1 },
+  { title: "از ۶۳ یکی‌یکی به عقب. عدد بعدی؟", options: ["۶۲", "۶۴", "۶۰"], correct: 0 },
+  { title: "قبل از ۸۱ چه عددی است؟", options: ["۸۰", "۸۲", "۷۱"], correct: 0 },
+  { title: "با شمارش رو به عقب از ۴۵، عدد بعدی؟", options: ["۴۶", "۴۴", "۳۵"], correct: 1 },
+  { title: "از ۹۹ یکی‌یکی به عقب: ۹۹، ۹۸، ۹۷، ...", options: ["۱۰۰", "۹۶", "۹۵"], correct: 1 },
+  { title: "با شمارش ده‌تاده‌تا، بعد از ۳۰ چه عددی می‌آید؟", options: ["۳۱", "۴۰", "۲۰"], correct: 1 },
+  { title: "ده‌تاده‌تا: ۱۰، ۲۰، ۳۰، ... عدد بعدی؟", options: ["۳۱", "۴۰", "۵۰"], correct: 1 },
+  { title: "ده‌تاده‌تا: ۵۰، ۶۰، ۷۰، ... چه عددی؟", options: ["۷۱", "۸۰", "۹۰"], correct: 1 },
+  { title: "ده‌تاده‌تا به عقب: ۷۰، ۶۰، ۵۰، ... عدد بعدی؟", options: ["۴۰", "۴۵", "۳۰"], correct: 0 },
+  { title: "ده‌تاده‌تا به عقب، قبل از ۴۰ چه عددی؟", options: ["۳۰", "۳۹", "۵۰"], correct: 0 },
+  { title: "کدام شمارش اشتباه است؟", options: ["۲۵، ۲۶، ۲۷", "۳۸، ۳۹، ۴۰", "۵۰، ۵۱، ۵۳"], correct: 2 },
+  { title: "در شمارش رو به عقب کدام اشتباه است؟", options: ["۵۰، ۴۹، ۴۸", "۳۰، ۲۹، ۲۸", "۴۰، ۳۹، ۳۷"], correct: 2 },
+  { title: "الگو را کامل کن: ۱۵، ۱۶، ۱۷، ...، ۱۹", options: ["۱۸", "۲۰", "۲۵"], correct: 0 },
+  { title: "الگو را کامل کن: ۹۰، ۸۰، ۷۰، ...، ۵۰", options: ["۷۵", "۶۰", "۸۵"], correct: 1 },
+  { title: "الگو را کامل کن: ۹۸، ۹۷، ...، ۹۵، ۹۴", options: ["۹۹", "۹۶", "۹۳"], correct: 1 },
+  { title: "کدام عدد بزرگ‌تر است؟", options: ["۴۵", "۵۴", "۴۹"], correct: 1 },
+  { title: "کدام عدد کوچک‌تر است؟", options: ["۷۸", "۸۷", "۷۰"], correct: 2 },
+  { title: "از کوچک به بزرگ: ۶۷، ۶۶، ۶۸", options: ["۶۶، ۶۷، ۶۸", "۶۸، ۶۷، ۶۶", "۶۷، ۶۶، ۶۸"], correct: 0 },
+  { title: "عدد قبل و بعد ۵۵ کدام است؟", options: ["۵۴ و ۵۶", "۵۵ و ۵۶", "۵۶ و ۵۷"], correct: 0 },
+  { title: "عدد قبل و بعد ۷۰ کدام است؟", options: ["۶۹ و ۷۱", "۷۰ و ۷۱", "۶۹ و ۷۰"], correct: 0 },
+  { title: "از ۲۰ سه‌تا سه‌تا به عقب: ۲۰، ۱۷، ۱۴، ...", options: ["۱۳", "۱۲", "۱۱"], correct: 2 },
+  { title: "از ۱۰۰ یکی‌یکی به عقب: ۱۰۰، ۹۹، ۹۸، ...", options: ["۱۰۱", "۹۷", "۹۰"], correct: 1 },
+  { title: "قبل از ۶۰ چه عددی است؟", options: ["۵۹", "۶۱", "۷۰"], correct: 0 },
+  { title: "بعد از ۸۹ چه عددی می‌آید؟", options: ["۸۸", "۹۰", "۱۰۰"], correct: 1 }
+];
+
+let state = { playerName: "", coins: 0, position: 0, currentQuestion: null, isWaiting: false, usedQuestions: [] };
+let audioCtx = null;
+
+function getAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); return audioCtx; }
+function playTone(freqs, duration, type = 'sine', vol = 0.2) {
+  try {
+    const ctx = getAudio();
+    freqs.forEach((f, i) => {
+      const osc = ctx.createOscillator(); const gain = ctx.createGain();
+      osc.type = type; osc.frequency.value = f;
+      gain.gain.setValueAtTime(vol, ctx.currentTime + i * duration);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * duration + duration);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(ctx.currentTime + i * duration); osc.stop(ctx.currentTime + i * duration + duration);
+    });
+  } catch(e) {}
+}
+function soundCorrect() { playTone([523, 659, 784, 1047], 0.12, 'sine', 0.25); }
+function soundWrong()   { playTone([300, 200, 150], 0.18, 'sawtooth', 0.15); }
+function soundDice()    { playTone([400, 500, 600, 700], 0.05, 'square', 0.08); }
+function soundMove()    { playTone([700, 800], 0.08, 'triangle', 0.15); }
+function soundWin()     { playTone([523, 659, 784, 1047, 1319], 0.15, 'sine', 0.25); }
+
+function startGame() {
+  const name = document.getElementById('studentName').value.trim();
+  if (!name) { alert('لطفاً نام خود را وارد کنید!'); return; }
+  state = { playerName: name, coins: 0, position: 0, currentQuestion: null, isWaiting: false, usedQuestions: [] };
+  document.getElementById('playerName').textContent = name;
+  document.getElementById('coinCount').textContent = '0';
+  document.getElementById('msgBox').textContent = 'برای شروع، تاس رو پرتاب کن! 🎲';
+  document.getElementById('rollBtn').disabled = false;
+  document.getElementById('dice').textContent = '1';
+  buildBoard();
+  switchScreen('gameScreen');
+}
+
+function switchScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function buildBoard() {
+  const board = document.getElementById('board'); board.innerHTML = '';
+  const cells = [];
+  for (let row = 0; row < 5; row++) {
+    const rowCells = [];
+    for (let col = 0; col < 6; col++) rowCells.push(row * 6 + col + 1);
+    if (row % 2 === 0) cells.push(...rowCells.reverse()); else cells.push(...rowCells);
+  }
+  const display = cells.reverse();
+  
+  display.forEach(num => {
+    const cell = document.createElement('div');
+    cell.className = 'cell ' + (num % 2 === 0 ? 'even' : 'odd'); 
+    cell.id = 'cell-' + num;
+    let content = `<span class="num">${num.toLocaleString('fa-IR')}</span>`;
+    if (num === BOARD_SIZE) content += `<span style="font-size:3rem;">🏆</span>`;
+    else if (SNAKES[num]) content += `<span class="snake-icon">🐍</span>`;
+    else if (LADDERS[num]) content += `<span class="ladder-icon">🪜</span>`;
+    cell.innerHTML = content;
+    board.appendChild(cell);
+  });
+  renderPiece();
+}
+
+function renderPiece() {
+  document.querySelectorAll('.piece').forEach(p => p.remove());
+  document.querySelectorAll('.highlight').forEach(c => c.classList.remove('highlight'));
+  const cell = document.getElementById('cell-' + state.position);
+  if (cell) {
+    const piece = document.createElement('div');
+    piece.className = 'piece'; 
+    piece.textContent = '👦';
+    cell.appendChild(piece); 
+    cell.classList.add('highlight');
+  }
+}
+
+function rollDice() {
+  if (state.isWaiting) return;
+  const diceEl = document.getElementById('dice'); const btn = document.getElementById('rollBtn');
+  btn.disabled = true; diceEl.classList.add('rolling'); soundDice();
+  let count = 0;
+  const interval = setInterval(() => {
+    diceEl.textContent = Math.floor(Math.random() * 6) + 1;
+    count++;
+    if (count > 10) {
+      clearInterval(interval);
+      const result = Math.floor(Math.random() * 6) + 1;
+      diceEl.textContent = result; diceEl.classList.remove('rolling');
+      handleRoll(result);
+    }
+  }, 80);
+}
+
+function handleRoll(value) {
+  const remaining = BOARD_SIZE - state.position;
+  const msgBox = document.getElementById('msgBox');
+  if (value > remaining) {
+    msgBox.textContent = `🎲 عدد ${value} آمد. برای رسیدن به پایان باید عدد ${remaining} بیاید!`;
+    document.getElementById('rollBtn').disabled = false; return;
+  }
+  const newPos = state.position + value;
+  movePieceAnimated(state.position, newPos, () => {
+    state.position = newPos; renderPiece();
+    if (state.position === BOARD_SIZE) { finishGame(); return; }
+    processCell();
+  });
+}
+
+function movePieceAnimated(from, to, cb) {
+  let current = from; const steps = to - from;
+  if (steps === 0) { cb(); return; }
+  const dir = steps > 0 ? 1 : -1; let count = 0;
+  const timer = setInterval(() => {
+    current += dir; state.position = current; renderPiece(); soundMove(); count++;
+    if (count >= Math.abs(steps)) { clearInterval(timer); setTimeout(cb, 200); }
+  }, 200);
+}
+
+function processCell() {
+  const pos = state.position; const msgBox = document.getElementById('msgBox');
+  if (SNAKES[pos]) {
+    msgBox.textContent = `🐍 آخ! مار گزیدت! برمی‌گردی به خانه ${SNAKES[pos].toLocaleString('fa-IR')}`;
+    playTone([400, 300, 200], 0.15, 'sawtooth', 0.15);
+    setTimeout(() => { movePieceAnimated(pos, SNAKES[pos], () => { state.position = SNAKES[pos]; renderPiece(); setTimeout(checkQuestionOrContinue, 400); }); }, 800);
+    return;
+  }
+  if (LADDERS[pos]) {
+    msgBox.textContent = `🪜 عالیه! پله رفت بالا! می‌ری به خانه ${LADDERS[pos].toLocaleString('fa-IR')}`;
+    playTone([523, 659, 784], 0.1, 'sine', 0.2);
+    setTimeout(() => { movePieceAnimated(pos, LADDERS[pos], () => { state.position = LADDERS[pos]; renderPiece(); setTimeout(checkQuestionOrContinue, 400); }); }, 800);
+    return;
+  }
+  checkQuestionOrContinue();
+}
+
+function checkQuestionOrContinue() {
+  if (QUESTION_CELLS.includes(state.position)) { askQuestion(); }
+  else {
+    document.getElementById('rollBtn').disabled = false;
+    document.getElementById('msgBox').textContent = `مهره در خانه ${state.position.toLocaleString('fa-IR')} است. دوباره تاس بینداز! 🎲`;
+  }
+}
+
+function askQuestion() {
+  state.isWaiting = true;
+  const available = QUESTIONS.filter((_, i) => !state.usedQuestions.includes(i));
+  const pool = available.length > 0 ? available : QUESTIONS;
+  const q = pool[Math.floor(Math.random() * pool.length)];
+  const idx = QUESTIONS.indexOf(q);
+  if (!state.usedQuestions.includes(idx)) state.usedQuestions.push(idx);
+  state.currentQuestion = q;
+  
+  document.getElementById('qTitle').textContent = q.title;
+  const optsBox = document.getElementById('qOptions'); optsBox.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button'); btn.className = 'q-option'; btn.textContent = opt;
+    btn.onclick = () => checkAnswer(i, btn); optsBox.appendChild(btn);
+  });
+  document.getElementById('questionModal').classList.add('active');
+}
+
+function checkAnswer(index, btn) {
+  const q = state.currentQuestion;
+  if (index === q.correct) {
+    btn.classList.add('correct'); sou
